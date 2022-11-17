@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { stateContextType, thought } from "../@types";
-import { DEV } from "./constants";
+import { PROD } from "./constants";
 
 const state = createContext<stateContextType>({
   data: [],
@@ -17,7 +17,7 @@ export const ApiContext = ({ children }: any) => {
   const getAllThoughts = () => {
     setIsLoading(true);
     axios
-      .get(DEV)
+      .get(PROD)
       .then((res) => {
         console.log(res.data);
         setData(res.data);

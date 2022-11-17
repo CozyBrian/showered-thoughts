@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { thought } from "../@types";
 import { useStateContext } from "../services/api-context";
-import { DEV } from "../services/constants";
+import { PROD } from "../services/constants";
 
 type pageProps = {
   mode?: "ADD" | "EDIT";
@@ -33,7 +33,7 @@ const AddEditThought = ({ mode = "ADD", thought, onEdit }: pageProps) => {
     if (content !== "" && author !== "") {
       if (mode === "ADD") {
         axios
-          .post(DEV, { author, content })
+          .post(PROD, { author, content })
           .then((res) => {
             console.log(res.data);
             setAddModalOpen!(false);
@@ -46,7 +46,7 @@ const AddEditThought = ({ mode = "ADD", thought, onEdit }: pageProps) => {
           });
       } else {
         axios
-          .put(`${DEV}/${thought?.id}`, { author, content })
+          .put(`${PROD}/${thought?.id}`, { author, content })
           .then((res) => {
             console.log(res.data);
             setAddModalOpen!(false);

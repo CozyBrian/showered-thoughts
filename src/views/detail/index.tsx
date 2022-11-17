@@ -5,7 +5,7 @@ import { thought } from "../../@types";
 import AddEditThought from "../../components/add-edit-thought.component";
 import Thought from "../../components/thought-component";
 import { useStateContext } from "../../services/api-context";
-import { DEV } from "../../services/constants";
+import { PROD } from "../../services/constants";
 
 const Details = () => {
   const { id } = useParams();
@@ -19,7 +19,7 @@ const Details = () => {
   const getThought = () => {
     setIsLoading(true);
     axios
-      .get(`${DEV}/${id}`)
+      .get(`${PROD}/${id}`)
       .then((res) => {
         setData(res.data);
       })
@@ -33,7 +33,7 @@ const Details = () => {
 
   const deleteThought = () => {
     axios
-      .delete(`${DEV}/${id}`)
+      .delete(`${PROD}/${id}`)
       .then((res) => {
         console.log(res.data);
       })
