@@ -9,4 +9,5 @@ export type stateContextType = {
   isLoading: boolean;
   addModalOpen: boolean;
   setAddModalOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  getAllThoughts?: () => void;
 };

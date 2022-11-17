@@ -1,4 +1,4 @@
-import AddThought from "../../components/add-thought.component";
+import AddEditThought from "../../components/add-edit-thought.component";
 import ThoughtList from "../../components/thoughtList.component";
 import { useStateContext } from "../../services/api-context";
 
@@ -20,7 +20,7 @@ const Home = () => {
       <div className="container">
         <ThoughtList />
       </div>
-      <AddThought />
+      <AddEditThought />
     </div>
   );
 };

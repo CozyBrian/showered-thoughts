@@ -35,7 +35,9 @@ export const ApiContext = ({ children }: any) => {
   }, []);
 
   return (
-    <state.Provider value={{ data, isLoading, addModalOpen, setAddModalOpen }}>
+    <state.Provider
+      value={{ data, isLoading, addModalOpen, setAddModalOpen, getAllThoughts }}
+    >
       {children}
     </state.Provider>
   );

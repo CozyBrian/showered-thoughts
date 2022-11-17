@@ -1,14 +1,29 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { thought } from "../@types";
 import { useStateContext } from "../services/api-context";
 import { DEV } from "../services/constants";
 
-const AddThought = () => {
-  const { addModalOpen, setAddModalOpen } = useStateContext();
+type pageProps = {
+  mode?: "ADD" | "EDIT";
+  thought?: thought;
+  onEdit?: () => void;
+};
+
+const AddEditThought = ({ mode = "ADD", thought, onEdit }: pageProps) => {
+  const { addModalOpen, setAddModalOpen, getAllThoughts } = useStateContext();
   const [content, setContent] = useState("");
   const [author, setAuthor] = useState("");
 
-  const addThought = () => {
+  useEffect(() => {
+    if (mode === "EDIT") {
+      setContent(thought?.content!);
+      setAuthor(thought?.author!);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const addEditThought = () => {
     if (content === "") {
       return;
     }
@@ -16,16 +31,34 @@ const AddThought = () => {
       setAuthor("Anonymous");
     }
     if (content !== "" && author !== "") {
-      axios
-        .post(DEV, { author, content })
-        .then((res) => {
-          console.log(res.data);
-          setAddModalOpen!(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {});
+      if (mode === "ADD") {
+        axios
+          .post(DEV, { author, content })
+          .then((res) => {
+            console.log(res.data);
+            setAddModalOpen!(false);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            getAllThoughts!();
+          });
+      } else {
+        axios
+          .put(`${DEV}/${thought?.id}`, { author, content })
+          .then((res) => {
+            console.log(res.data);
+            setAddModalOpen!(false);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally(() => {
+            getAllThoughts!();
+            onEdit!();
+          });
+      }
     }
   };
 
@@ -57,7 +90,9 @@ const AddThought = () => {
               />
             </div>
             <div className="flex w-full justify-between pt-2">
-              <div className="text-xs text-slate-500">{content.length}/120</div>
+              <div className="text-xs text-slate-500">
+                {content?.length}/120
+              </div>
               <div>
                 ~
                 <input
@@ -76,10 +111,10 @@ const AddThought = () => {
               Cancel
             </button>
             <button
-              onClick={() => addThought()}
+              onClick={() => addEditThought()}
               className="text-white bg-green-500 hover:bg-green-300 active:bg-green-400 px-4 py-2 rounded-md duration-150"
             >
-              Add
+              {mode === "ADD" ? "Add" : "Edit"}
             </button>
           </div>
         </div>
@@ -90,4 +125,4 @@ const AddThought = () => {
   }
 };
 
-export default AddThought;
+export default AddEditThought;
